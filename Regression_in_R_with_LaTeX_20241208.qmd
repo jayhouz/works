@@ -1,0 +1,290 @@
+---
+title: "Linea Regression With Matrices and LM Model in R (LaTeX also incorporated)"
+author: "Joshua Mwangi Maina"
+editor: visual
+format:
+  pdf:
+    documentclass: article # book # article #
+    geometry: "left=1in, right=1in, top=1in, bottom=1in"
+    #classoption: "openany" # this was to skip blank page at end of chapter.
+    #include-in-header: preamble.tex
+    classoption: "openany"
+    author-meta: "Joshua Mwangi Maina"
+    # include-in-header: "plausible.html"
+    include-in-header: preamble.tex
+    callout-appearance: simple
+---
+
+# Simple Linear Regression
+
+```{r}
+X1 <- c(30.2, 32.8, 32.9, 35.1, 42.3, 45.5, 46) 
+y <- c(6.8, 10.1, 14.3, 19.3, 10.2, 20, 23.7)
+```
+
+## Step 1: Create a data frame
+
+```{r}
+data <- data.frame(y, X1)
+```
+
+## Step 2: Fit the model
+
+```{r}
+model <- lm(y ~ X1, data = data) 
+summary(model)
+```
+
+## Step 3: Predict y when x1 = 40
+
+```{r}
+new_data <- data.frame(X1 = 40)
+predicted_y <- predict(model, newdata = new_data)
+```
+
+## Print the predicted value
+
+```{r}
+print(predicted_y)
+```
+
+::: callout-note
+# Printing the fitted line for the simple linear regression
+
+## Extract coefficients
+
+```{r}
+coefficients <- coef(model)
+
+beta_0 <- coefficients[1]
+beta_1 <- coefficients[2]
+# beta_2 <- coefficients[3]
+```
+
+## Construct the fitted line expression in LaTeX
+
+```{r}
+# Construct the fitted line expression in LaTeX, conditionally applying signs
+fitted_line <- paste0("\\hat{y} = ", round(beta_0, 3),
+                      ifelse(beta_1 < 0, " - ", " + ")
+                            , round(abs(beta_1), 3), " \\cdot x_1" #,
+                      # ifelse(beta_2 < 0, " - ", " + ")
+                      #       , round(abs(beta_2), 3), " \\cdot x_2"
+                      )
+```
+
+## Print the fitted line
+
+$$
+`r fitted_line`
+$$
+:::
+
+\pagebreak
+
+# Multiple Regression Using `lm()` Method
+
+## Step 1: Load necessary package
+
+```{r}
+# install.packages("dplyr") # Uncomment to install
+
+library(dplyr)
+```
+
+## Step 2: Define the data
+
+```{r}
+X1 <- c(0, 1, 2, 3, 4, 5) 
+X2 <- c(0, 1, 4, 9, 16, 25) 
+y <- c(9.1, 7.3, 3.2, 4.6, 4.8, 2.9)
+```
+
+## Step 3: Create a data frame
+
+```{r}
+data <- data.frame(y, X1, X2)
+```
+
+```{r}
+print(-9.2907 + (0.6399 * 40))
+```
+
+## Step 4: Fit the model
+
+```{r}
+model <- lm(y ~ X1 + X2, data = data) 
+summary(model)
+```
+
+## Step 5: Predict y when x1 = 2
+
+```{r}
+new_data <- data.frame(X1 = 2, X2 = 2^2) # X2 = 4 
+predicted_y <- predict(model, newdata = new_data)
+```
+
+## Print the predicted value
+
+```{r}
+print(predicted_y)
+```
+
+::: callout-note
+# Printing the fitted line for the multiple linear regression
+
+## Extract coefficients
+
+```{r}
+coefficients <- coef(model)
+
+beta_0 <- coefficients[1]
+beta_1 <- coefficients[2]
+beta_2 <- coefficients[3]
+```
+
+```{r}
+print(coefficients)
+```
+
+## Construct the fitted line expression in LaTeX
+
+```{r}
+# Construct the fitted line expression in LaTeX, conditionally applying signs
+fitted_line <- paste0("\\hat{y} = ", round(beta_0, 3),
+                      ifelse(beta_1 < 0, " - ", " + ")
+                            , round(abs(beta_1), 3), " \\cdot x_1",
+                      ifelse(beta_2 < 0, " - ", " + ")
+                            , round(abs(beta_2), 3), " \\cdot x_2"
+                      )
+```
+
+## Print the fitted line
+
+$$
+`r fitted_line`
+$$
+:::
+
+\pagebreak
+
+# To calculate each of these matrices in R, follow these steps:
+
+## Step 1: Define Matrix X
+
+```{r}
+X <- matrix(c(
+  1, 0, 0,
+  1, 1, 1,
+  1, 2, 4,
+  1, 3, 9,
+  1, 4, 16,
+  1, 5, 25
+), nrow = 6, ncol = 3, byrow = TRUE)
+```
+
+## Step 2: Calculate the Transpose of X (X')
+
+```{r}
+Xt <- t(X)
+Xt
+```
+
+## Step 3: Calculate X' \* X
+
+```{r}
+XtX <- Xt %*% X
+XtX
+```
+
+## Step 4: Calculate the Inverse of X' \* X
+
+Use solve() to find the inverse.
+
+```{r}
+XtX_inv <- solve(XtX)
+XtX_inv
+```
+
+````{=html}
+<!--## Full Code
+
+Here’s the full R code with each step:
+
+```{r}
+# Define matrix X
+X <- matrix(c(
+  1, 0, 0,
+  1, 1, 1,
+  1, 2, 4,
+  1, 3, 9,
+  1, 4, 16,
+  1, 5, 25
+), nrow = 6, ncol = 3, byrow = TRUE)
+
+# Transpose of X
+Xt <- t(X)
+Xt
+
+# X' * X
+XtX <- Xt %*% X
+XtX
+
+# Inverse of X' * X
+XtX_inv <- solve(XtX)
+XtX_inv
+```
+-->
+````
+
+## Output Explanation
+
+```         
+•   Xt gives you the transpose of X.
+•   XtX shows the result of X' * X.
+•   XtX_inv displays the inverse of X' * X.
+```
+
+## Compute $\beta$
+
+<!--(\beta_0, \beta_1, \beta_2)-->
+
+${\beta} = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \end{bmatrix}$,
+
+$\varepsilon$ represents the residuals
+
+To estimate $\boldsymbol\beta$, we minimize the sum of squared residuals by solving:
+
+$[\boldsymbol{\hat{\beta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}]$
+
+From above matrix output
+
+```{r}
+
+# y <- c(9.1, 7.3, 3.2, 4.6, 4.8, 2.9)
+
+y <- t(matrix(c(9.1, 7.3, 3.2, 4.6, 4.8, 2.9), nrow = 1, ncol = 6, byrow = FALSE))
+
+beta = XtX_inv %*% Xt %*% y
+
+print(beta)
+
+```
+
+::: callout-note
+## We find same results for $\beta$
+
+The `lm()` method yields the same results for $\beta_0, \beta_1$ and $\beta_2$ as follows:
+
+$$`r fitted_line`$$
+
+While the $[\boldsymbol{\hat{\beta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}]$ method as follows: $$`r round(beta,3)`$$
+:::
+
+::: callout-note
+### To answer your question on $X^Ty$, I have multiplied `Xt` by `y` see below results:
+
+```         
+   Xt %*% y = [`r Xt %*% y`]
+```
+:::

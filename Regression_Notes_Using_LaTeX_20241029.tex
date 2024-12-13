@@ -1,0 +1,234 @@
+\documentclass[11pt]{beamer}
+
+%\usetheme{Antibes} % Warsaw, Montpellier # nice headers, PaloAlto (Dr Gatendes)
+%\usecolortheme{rose}    % Other options: seagull, dolphin, whale, beaver, lily, wolverine (yellowish) etc.
+
+% PaloAlto + dolphin % or orchid good for lectures
+% Luebeck + dolphin % good for assignments - simple
+% Luebeck + orchid % good for assignments
+% Berlin + crane % yellow but good
+
+% \usetheme{PaloAlto} % CambridgeUS, Goettingen (Righ sidebar), Luebeck
+% \usecolortheme{dolphin}  % whale or beaver or orchid
+
+\usetheme{PaloAlto} % CambridgeUS, Goettingen (Righ sidebar), Luebeck
+\usecolortheme{dolphin}  % whale or beaver or orchid
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\author{Joshua Mwangi Maina}
+\title{Multiple Regression - Matrices}
+
+\subtitle{SDS6105 - Statistics For Data Science}
+
+\date{\today}
+
+%\usepackage{knitr}
+%\setbeamercovered{transparent} 
+%\setbeamertemplate{navigation symbols}{} 
+%\logo{} 
+\institute{UoN, Science and Technology} 
+%\date{} 
+\subject{SDS6105 - Statistics For Data Science} 
+
+\begin{document}
+
+%\fancyfoot[L]{SDS6105 - Statistics For Data Science}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%\begin{frame}
+%\tableofcontents
+%\end{frame}
+
+\begin{frame}
+
+In multiple regression, we want to estimate the coefficients $\beta_0$, $\beta_1$, and $\beta_2$ in the equation:
+\linebreak 
+
+$y = \beta_0 + \beta_1 X_1 + \beta_2 X_2$
+\linebreak 
+
+For a least squares solution, we can set up the problem in matrix form and solve it using linear algebra.
+
+1. Set Up the Matrix Equation
+\linebreak 
+Let:
+
+\hspace*{15pt}$	\mathbf{y}$ be the vector of observed y values.
+	\linebreak 
+\hspace*{15pt}$\mathbf{X}$ be the matrix of inputs (including a column of ones for the intercept term).
+
+\end{frame}
+
+\begin{frame}
+
+The model can be represented as:
+\linebreak 
+\linebreak 
+$[\mathbf{y} = \mathbf{X} \cdot \boldsymbol{\beta} + \mathbf{\varepsilon}]$
+
+where:
+
+\hspace*{15pt}$\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}$
+\medskip 
+\linebreak 
+\hspace*{15pt}$\mathbf{X} = \begin{bmatrix} 1 & X_{1,1} & X_{2,1} \\ 1 & X_{1,2} & X_{2,2} \\ \vdots & \vdots & \vdots \\ 1 & X_{1,n} & X_{2,n} \end{bmatrix}$ (with a leading column of ones for the intercept),	
+	
+\end{frame}
+
+\begin{frame}
+\hspace*{15pt}$\boldsymbol{\beta} = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \end{bmatrix}$,
+\medskip 
+\linebreak 
+\hspace*{15pt}$\mathbf{\varepsilon}$ represents the residuals.
+
+\medskip
+To estimate \(\boldsymbol{\beta}\), we minimize the sum of squared residuals by solving:
+%\linebreak
+\bigskip
+\linebreak
+\hspace*{15pt}$[\boldsymbol{\hat{\beta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}]$
+
+\end{frame}
+
+\begin{frame}
+2. Construct the Matrices with Your Data
+
+Given:
+
+\hspace*{15pt}	$	 X_1 = [0, 1, 2, 3, 4, 5]$ \linebreak 
+\hspace*{15pt}	$	 X_2 = [0, 1, 4, 9, 16, 25] $ \linebreak 
+\hspace*{15pt}	$	 y   = [9.1, 7.3, 3.2, 4.6, 4.8, 2.9] $ \linebreak 
+	
+We’ll create the matrix $\mathbf{X}$ and vector $\mathbf{y}$, and then solve for $\boldsymbol{\beta}$.
+
+\end{frame}
+
+\begin{frame}
+3.	Construct the matrix $\mathbf{X}$:
+	\linebreak 
+\hspace*{15pt}	$\bullet$ 	Add a column of ones for the intercept.
+\medskip 
+\linebreak 
+\hspace*{15pt}	$\bullet$ 	This results in:
+\medskip 
+\linebreak 
+				$\mathbf{X} = \begin{bmatrix}
+				1 & 0 & 0 \\
+				1 & 1 & 1 \\
+				1 & 2 & 4 \\
+				1 & 3 & 9 \\
+				1 & 4 & 16 \\
+				1 & 5 & 25
+								\end{bmatrix}$
+\end{frame}
+
+\begin{frame}
+	4.	Construct the matrix equation:\linebreak 
+	\linebreak 
+\hspace*{15pt} We have $\mathbf{y} = \begin{bmatrix} 9.1 \\ 7.3 \\ 3.2 \\ 4.6 \\ 4.8 \\ 2.9 \end{bmatrix}$.
+	\linebreak
+	\linebreak  
+	5.	Calculate $(\boldsymbol{\beta})$ using the formula:
+$[\boldsymbol{\hat{\beta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}]$
+\end{frame}
+
+\begin{frame}
+
+Step 4: Calculate $\mathbf{X}^T \mathbf{X}$
+\medskip 
+\linebreak 
+\hspace*{15pt}	1.	Transpose the $\mathbf{X} matrix (\mathbf{X}^T)$ by swapping rows with columns.
+\medskip 
+\linebreak 
+\hspace*{15pt}	2.	Multiply $\mathbf{X}^T$ by $\mathbf{X}$ to get a 3x3 matrix.
+\bigskip 
+\linebreak 
+Step 5: Calculate $\mathbf{X}^T \mathbf{y}$
+
+	1.	Multiply the transposed matrix $\mathbf{X}^T$ with $\mathbf{y}$ to get a 3x1 matrix.
+\bigskip 
+\linebreak  
+Step 6: Calculate $(\mathbf{X}^T \mathbf{X})^{-1}$
+\medskip 
+\linebreak 
+	1.	Invert the 3x3 matrix obtained in Step 2 using matrix inversion methods (you can do this in Python, R, or Excel if manual inversion is too complex).
+\end{frame}
+
+\begin{frame}
+
+Step 7: Calculate $\boldsymbol{\hat{\beta}}$
+\bigskip 
+\linebreak 
+Multiply $(\mathbf{X}^T \mathbf{X})^{-1} by \mathbf{X}^T \mathbf{y}$ 
+\medskip 
+\linebreak 
+to solve for the coefficient vector $(\boldsymbol{\hat{\beta}})$.
+\medskip 
+\linebreak 
+This will give you values for $\beta_0$, $\beta_1$, and $\beta_2$.
+\bigskip 
+\linebreak 
+Step 6: Predict y when $x_1 = 2$
+\medskip 
+\linebreak 
+To predict $y$ when $x_1 = 2$:
+\medskip 
+\linebreak 
+\hspace*{15pt}	Plug $x_1 = 2$ and $x_2 = 2^2 = 4$ into the regression equation:
+\medskip 
+\linebreak 
+\hspace*{15pt}$\hat{y} = \beta_0 + \beta_1 \cdot 2 + \beta_2 \cdot 4$
+\medskip 
+\linebreak 
+
+Using the estimated values for $\beta_0$, $\beta_1$, and $\beta_2$, compute $\hat{y}$.
+
+\end{frame}
+
+\end{document}
+
+
+
+
+
+
+
+\begin{frame}
+
+This was a demo for Phill...
+\linebreak\linebreak
+This is suppossed to be another line
+\linebreak
+%$ \bullet$ bullet 1
+%$ \bullet$ bullet 2
+%$ \bulled$ bullet 3
+
+3.	Construct the matrix $\mathbf{X}$:
+	
+\hspace*{15pt} $\bullet$ Add a column of ones for the intercept. %\linebreak 
+
+\hspace*{15pt} $\bullet$ Add a column of ones for the intercept.
+
+\hspace*{15pt} $\bullet$ Add a column of ones for the intercept.
+
+
+To find the coefficients  $B_0$ ,  $B_1$ , and  $B_2$  for a multiple linear regression model of the form:
+
+\hspace*{15pt}$\hat{y} \cdot T$
+
+$y = B_0 + B_1 \cdot x_1 + B_2 \cdot x_2$
+
+$\hat y = 8.961 - 2.551 \cdot x_1 + 0.298 \cdot x_2$
+
+
+\end{frame}
+
+
+% \end{document}
